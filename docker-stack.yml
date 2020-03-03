@@ -36,6 +36,8 @@ services:
      # set redirect-https middleware to api-http router. @docker suffix is optional, as @file it just points to the source of configuration (can be docker label, file, k8s, etc)
       - "traefik.http.routers.web.middlewares=redirect-https@docker" 
       - "traefik.http.routers.web-secure.tls.certresolver=le"
+    networks:
+      - web
 
   traefik: 
     image: traefik:v2.0
@@ -56,3 +58,6 @@ services:
   # restart: always
   # environment:
   #   MYSQL_ROOT_PASSWORD: example
+
+networks:
+  web:
