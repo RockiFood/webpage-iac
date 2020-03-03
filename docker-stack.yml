@@ -28,15 +28,15 @@ services:
         - "traefik.http.routers.web-secure.rule=Host(`www.rockifood.com`)"
         - "traefik.http.routers.web-secure.entrypoints=web-secure"
         - "traefik.http.routers.web-secure.tls=true"
-        - "traefik.http.routers.web-secure.tls.certresolver=le"
         - "traefik.http.services.bot.loadbalancer.server.port=2368"
         # - "traefik.http.routers.whoami.tls.certresolver=mytlschallenge" 
-
-       # create redirect-https middleware via label
+        
+        # create redirect-https middleware via label
         - "traefik.http.middlewares.redirect-https.redirectscheme.scheme=https"
         - "traefik.http.middlewares.redirect-https.redirectscheme.permanent=true"
-       # set redirect-https middleware to api-http router. @docker suffix is optional, as @file it just points to the source of configuration (can be docker label, file, k8s, etc)
+        # set redirect-https middleware to api-http router. @docker suffix is optional, as @file it just points to the source of configuration (can be docker label, file, k8s, etc)
         - "traefik.http.routers.web.middlewares=redirect-https@docker" 
+        - "traefik.http.routers.web-secure.tls.certresolver=le"
     networks:
       - web
 
