@@ -1,0 +1,30 @@
+[entryPoints]
+  [entryPoints.web]
+    address = ":80"
+
+  [entryPoints.web-secure]
+    address = ":443"
+
+[certificatesResolvers.le.acme]
+  email = "s.tabares@somosnoa.com"
+  storage = "acme.json"
+  [certificatesResolvers.le.acme.httpChallenge]
+    # used during the challenge
+    entryPoint = "web"
+
+[providers.docker]
+  endpoint = "unix:///var/run/docker.sock"
+  network = "web"
+
+[api]
+  # Dashboard
+  #
+  # Optional
+  # Default: true
+  #
+  dashboard = true
+
+
+# static configuration
+[log]
+  level = "DEBUG"

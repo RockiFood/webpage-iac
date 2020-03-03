@@ -1,0 +1,58 @@
+version: '3.1'
+
+services:
+
+  ghost:
+    image: ghost:3-alpine
+    restart: always
+    volumes:
+      - ./content:/var/lib/ghost/content
+        #  - ./config.development.json:/var/lib/ghost/config.development.json
+        # - ./config.production.json:/var/lib/ghost/config.production.json
+    #ports:
+    #  - 8085:2368
+    environment:
+      # see https://docs.ghost.org/docs/config#section-running-ghost-with-config-env-variables
+      NODE_ENV: development
+      url: https://rockifood.com/
+      #database__client: mysql
+      #database__connection__host: db
+      #database__connection__user: root
+      #database__connection__password: example
+      #database__connection__database: ghost
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.web.rule=Host(`rockifood.com`)"
+      - "traefik.http.routers.web.entrypoints=web"
+      - "traefik.http.routers.web-secure.rule=Host(`rockifood.com`)"
+      - "traefik.http.routers.web-secure.entrypoints=web-secure"
+      - "traefik.http.routers.web-secure.tls=true"
+      - "traefik.http.services.bot.loadbalancer.server.port=2368"
+      # - "traefik.http.routers.whoami.tls.certresolver=mytlschallenge" 
+
+     # create redirect-https middleware via label
+      - "traefik.http.middlewares.redirect-https.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.redirect-https.redirectscheme.permanent=true"
+     # set redirect-https middleware to api-http router. @docker suffix is optional, as @file it just points to the source of configuration (can be docker label, file, k8s, etc)
+      - "traefik.http.routers.web.middlewares=redirect-https@docker" 
+      - "traefik.http.routers.web-secure.tls.certresolver=le"
+
+  traefik: 
+    image: traefik:v2.0
+    #command: --api.insecure=true --providers.docker
+    ports:
+      - "80:80"
+      - "443:443"
+      #- "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.toml:/etc/traefik/traefik.toml
+      - ./acme/acme.json:/acme.json
+    networks:
+      - web
+
+  #db:
+  #image: mysql:5.7
+  # restart: always
+  # environment:
+  #   MYSQL_ROOT_PASSWORD: example
