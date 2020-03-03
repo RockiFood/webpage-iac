@@ -6,7 +6,7 @@
     address = ":443"
 
 [certificatesResolvers.le.acme]
-  email = "s.tabares@somosnoa.com"
+  email = "sy@tabares.me"
   storage = "acme.json"
   [certificatesResolvers.le.acme.httpChallenge]
     # used during the challenge
