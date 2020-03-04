@@ -15,6 +15,13 @@ services:
       # see https://docs.ghost.org/docs/config#section-running-ghost-with-config-env-variables
       NODE_ENV: development
       url: https://rockifood.com/
+      mail__from: sytabaresa@gmail.com
+      mail__transport: SMTP
+      mail__options__service: gmail
+      mail__options__host: smtp.gmail.com
+      mail__options__port: 465
+      mail__options__auth__user: sytabaresa@gmail.com
+      mail__options__auth__passL test
       #database__client: mysql
       #database__connection__host: db
       #database__connection__user: root
