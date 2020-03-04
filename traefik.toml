@@ -28,3 +28,10 @@
 # static configuration
 [log]
   level = "DEBUG"
+
+
+[http.middlewares]
+   [http.middlewares.nonwww-redirect.redirectRegex]
+      regex = "^https://www.(.*)"
+      replacement = "https://$1"
+      permanent = true
