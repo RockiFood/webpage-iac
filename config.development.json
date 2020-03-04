@@ -11,7 +11,17 @@
     }
   },
   "mail": {
-    "transport": "Direct"
+    "from": "sytabaresa@gmail.com",
+    "transport": "SMTP",
+    "options": {
+      "service": "gmail",
+      "host": "smtp.gmail.com",
+      "port": 465,
+      "auth": {
+        "user": "sytabaresa@gmail.com",
+        "pass": "test"
+      }
+    }
   },
   "logging": {
     "transports": [
@@ -24,4 +34,3 @@
     "contentPath": "/var/lib/ghost/content"
   }
 }
-
